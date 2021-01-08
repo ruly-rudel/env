@@ -1,7 +1,7 @@
-- name: apt autoremove
-  apt:
-    autoclean:  yes
-    autoremove: yes
+#- name: apt autoremove
+#  apt:
+#    autoremove: yes
+#    autoclean:  yes
 
 - name: reboot
   command: reboot

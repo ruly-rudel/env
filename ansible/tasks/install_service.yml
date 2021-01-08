@@ -1,12 +1,14 @@
 - name: uninstall apt packages
   apt:
     state: absent
+    autoremove: yes
     pkg:  '{{ service_defs[item].apt.absent }}'
   when: service_defs[item].apt.absent is defined
 
 - name: install apt packages
   apt:
     state: present
+    autoclean:  yes
     pkg:  '{{ service_defs[item].apt.present }}'
   when: service_defs[item].apt.present is defined
 
@@ -36,7 +38,7 @@
   service:
     name:    '{{ private_item.name }}'
     enabled: '{{ private_item.enabled | default("yes") }}'
-    state:   '{{ private_item.state   | default("started") }}'
+    state:   '{{ private_item.state   | default("reloaded") }}'
   loop: '{{ service_defs[item].sys.services }}'
   loop_control:
     loop_var: private_item

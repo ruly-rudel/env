@@ -1,4 +1,4 @@
 #127.0.0.1
 
 [gateway]
-sirius using=common,shairport,nftables static_device=eth0 static_ip=192.168.20.254/24 napt_gateway=wlan0
+sirius using=common,shairport,dhcpcd5,dnsmasq,nftables static_device=eth0 static_ip=192.168.20.254/24 napt_gateway=wlan0

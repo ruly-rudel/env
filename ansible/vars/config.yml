@@ -50,15 +50,36 @@ service_defs:
       services:
         - name: shairport-sync
 
-  nftables:
+  dhcpcd5:
     apt:
       present:
-        - nftables
+        - dhcpcd5
     conf:
       files:
         - name: /etc/systemd/network/50-wlan.link
       templates:
         - name: /etc/dhcpcd.conf
+    sys:
+      services:
+        - name: dhcpcd5
+
+  dnsmasq:
+    apt:
+      present:
+        - dnsmasq
+    conf:
+      files:
+        - name: /etc/dnsmasq.conf
+    sys:
+      services:
+        - name: dnsmasq
+
+  nftables:
+    apt:
+      present:
+        - nftables
+    conf:
+      templates:
         - name: /etc/nftables.conf
     sys:
       services:
