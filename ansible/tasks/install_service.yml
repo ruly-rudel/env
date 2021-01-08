@@ -38,7 +38,7 @@
   service:
     name:    '{{ private_item.name }}'
     enabled: '{{ private_item.enabled | default("yes") }}'
-    state:   '{{ private_item.state   | default("reloaded") }}'
+    state:   '{{ private_item.state   | default("started") }}'
   loop: '{{ service_defs[item].sys.services }}'
   loop_control:
     loop_var: private_item
