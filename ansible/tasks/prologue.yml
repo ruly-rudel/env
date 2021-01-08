@@ -1,0 +1,16 @@
+- name: setup userid/password
+  user:
+    name: '{{ item.id }}'
+    password: '{{ item.password }}'
+  loop: '{{ vault.users[setup_users | default("default")] }}'
+
+- name: swapoff
+  command: swapoff --all
+
+- name: prepare tmpfs
+  include: tasks/prepare_tmpfs.yml
+  loop: '{{ common.tmpfs.dirs }}'
+
+- name: apt update
+  apt:
+    update_cache: yes

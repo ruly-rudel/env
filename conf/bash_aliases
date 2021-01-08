@@ -1,0 +1,7 @@
+alias docker-run='docker run -it --rm -u `id -u`:`id -g` -v /etc/group:/etc/group:ro -v /etc/passwd:/etc/passwd:ro -v ~:/home/`whoami` -v "${PWD}":/work'
+
+alias ansible='docker-run ansible'
+alias ansible-sh='docker-run --entrypoint /bin/bash ansible'
+alias ansible-playbook='docker-run --entrypoint /usr/local/bin/ansible-playbook ansible'
+alias ansible-galaxy='docker-run --entrypoint /usr/local/bin/ansible-galaxy ansible'
+alias ansible-vault='docker-run --entrypoint /usr/local/bin/ansible-vault ansible'

@@ -1,0 +1,65 @@
+common:
+  tmpfs:
+    dirs:
+      - { dir: /tmp,     mode: "1777", size: 32m }
+      - { dir: /var/tmp, mode: "1777", size: 16m }
+      - { dir: /var/log, mode: "0755", size: 32m }
+
+service_defs:
+  common:
+    apt:
+      absent:
+        - build-essential
+        - binutils
+        - binutils-arm-linux-gnueabihf
+        - binutils-common:armhf
+        - cpp
+        - cpp-8
+        - dphys-swapfile
+        - make
+        - man-db
+        - manpages-dev
+        - manpages
+        - nano
+        - gcc-4.9-base:armhf
+        - gcc-5-base:armhf
+        - gcc-6-base:armhf
+        - gcc-7-base:armhf
+        - gdb
+        - python2
+        - iptables
+        - libraspberrypi-dev
+        - libraspberrypi-doc
+    conf:
+      files:
+        - {name: /etc/init.d/tmpfs-logs.sh, mode: "0755"}
+        -  name: /etc/systemd/system/tmpfs-logs.service
+    sys:
+      services:
+        - {name: dphys-swapfile, enabled: no, state: stopped}
+        -  name: tmpfs-logs
+
+  shairport:
+    apt:
+      present:
+        - shairport-sync
+    conf:
+      files:
+        - name: /etc/shairport-sync.conf
+    sys:
+      services:
+        - name: shairport-sync
+
+  nftables:
+    apt:
+      present:
+        - nftables
+    conf:
+      files:
+        - name: /etc/systemd/network/50-wlan.link
+      templates:
+        - name: /etc/dhcpcd.conf
+        - name: /etc/nftables.conf
+    sys:
+      services:
+        - name: nftables

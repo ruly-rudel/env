@@ -1,0 +1,9 @@
+- name: apt autoremove
+  apt:
+    autoclean:  yes
+    autoremove: yes
+
+- name: reboot
+  command: reboot
+  when: reboot is defined
+  poll: 0

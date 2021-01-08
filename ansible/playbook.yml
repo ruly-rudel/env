@@ -1,0 +1,38 @@
+#- hosts: ungrouped
+#  gather_facts: false
+#  connection: local
+#  tasks:
+#    - name: comman line option error
+#      fail: msg="you must set a host group using a --limit option."
+
+- hosts: gateway
+  become: True
+  gather_facts: no
+  tasks: 
+    - name: ipv4 forward
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: yes
+        state: present
+        reload: yes
+
+- hosts: all
+  become: True
+  gather_facts: no
+  vars_files:
+    - vars/config.yml
+    - vars/vault.yml
+  tasks: 
+    - name: prologue
+      include: tasks/prologue.yml
+
+    - name: install services 
+      include: tasks/install_service.yml
+      loop: '{{ using.split(",") }}'
+
+    - name: epilogue
+      include: tasks/epilogue.yml
+
+#      when:
+#        - ansible_mounts | map(attribute='mount') | intersect([item.dir]) == []

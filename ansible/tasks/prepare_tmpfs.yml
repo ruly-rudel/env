@@ -1,0 +1,22 @@
+- name: check mountpoint
+  command: mountpoint -q "{{ item.dir }}"
+  check_mode: no
+  register: prepare_tmpfs_result
+  failed_when: False
+  changed_when: False
+
+- name: prepare_tmpfs
+  block:
+    - name: remove dir
+      file:
+        path: "{{ item.dir }}"
+        state: absent
+    
+    - name: mount tmpfs
+      ansible.posix.mount:
+        path: "{{ item.dir }}"
+        src: tmpfs
+        fstype: tmpfs
+        opts: "{{ 'defaults,noatime,mode=' ~ item.mode ~ ',size=' ~ item.size }}"
+        state: mounted
+  when: prepare_tmpfs_result.rc == 1

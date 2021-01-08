@@ -1,0 +1,12 @@
+[Unit]
+Description=tmpfsLogs
+RequiresMountsFor=/var/log
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var
+ExecStart=/etc/init.d/tmpfs-logs.sh
+
+[Install]
+WantedBy=multi-user.target

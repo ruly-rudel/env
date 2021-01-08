@@ -1,0 +1,43 @@
+- name: uninstall apt packages
+  apt:
+    state: absent
+    pkg:  '{{ service_defs[item].apt.absent }}'
+  when: service_defs[item].apt.absent is defined
+
+- name: install apt packages
+  apt:
+    state: present
+    pkg:  '{{ service_defs[item].apt.present }}'
+  when: service_defs[item].apt.present is defined
+
+- name: copy config
+  copy:
+    src:  '{{ private_item.name | basename }}'
+    dest: '{{ private_item.name }}'
+    mode: '{{ private_item.mode | default("0644") }}'
+    backup: yes
+  loop: '{{ service_defs[item].conf.files }}'
+  loop_control:
+    loop_var: private_item
+  when: service_defs[item].conf.files is defined
+
+- name: copy config templates
+  template:
+    src:  '{{ private_item.name | basename }}'
+    dest: '{{ private_item.name }}'
+    mode: '{{ private_item.mode | default("0644") }}'
+    backup: yes
+  loop: '{{ service_defs[item].conf.templates }}'
+  loop_control:
+    loop_var: private_item
+  when: service_defs[item].conf.templates is defined
+
+- name: start services
+  service:
+    name:    '{{ private_item.name }}'
+    enabled: '{{ private_item.enabled | default("yes") }}'
+    state:   '{{ private_item.state   | default("started") }}'
+  loop: '{{ service_defs[item].sys.services }}'
+  loop_control:
+    loop_var: private_item
+  when: service_defs[item].sys.services is defined
