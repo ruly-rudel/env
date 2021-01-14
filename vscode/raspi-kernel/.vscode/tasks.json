@@ -1,0 +1,55 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "env": {
+            "install_dir": "/Workspace/install",
+            "boot_dir": "/Workspace/install/boot",
+            "overlay_dir": "/Workspace/install/boot/overlays",
+            "src_dir": "/Workspace/linux/arch/arm/boot",
+            "pi_host": "pi@sirius.local"
+        }
+    },
+	"tasks": [
+        {
+            "label": "defconfig",
+            "type": "shell",
+            "command": "make bcmrpi_defconfig",
+            "group": "build"
+        },
+        {
+            "label": "menuconfig",
+            "type": "shell",
+            "command": "make menuconfig",
+            "group": "build"
+        },
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "make -j8 zImage modules dtbs",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Install",
+            "type": "shell",
+            "command": "rm -rf ${install_dir} && mkdir -p ${overlay_dir} && make INSTALL_MOD_PATH=${install_dir} modules_install && cp ${src_dir}/zImage ${boot_dir}/kernel.img && cp ${src_dir}/dts/*.dtb ${boot_dir} && cp ${src_dir}/dts/overlays/*.dtb* ${overlay_dir} && tar czf - -C ${install_dir} boot lib | ssh ${pi_host} 'sudo tar xzvf - --no-same-owner --group=root -C /'",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "make clean",
+            "group": "build"
+        },
+        {
+            "label": "distclean",
+            "type": "shell",
+            "command": "make distclean",
+            "group": "build"
+        }
+    ]
+}

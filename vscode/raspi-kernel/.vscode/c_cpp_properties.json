@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/Workspace/linux/include",
+                "/Workspace/linux/arch/arm/include",
+                "/Workspace/linux/arch/arm/include/generated",
+                "/Workspace/linux/arch/arm/include/generated/asm",
+                "/Workspace/linux/arch/arm/include/generated/uapi",
+                "/Workspace/linux/include/uapi"
+            ],
+            "forcedInclude": [
+                "/Workspace/linux/include/generated/autoconf.h"
+            ],
+            "defines": [
+                "__KERNEL__",
+                "__GNUC__"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}
